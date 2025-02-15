@@ -4,7 +4,7 @@
 - [Introduction](#introduction)
 - [Dataset Overview](#dataset-overview)
 - [Data Preprocessing](#data-preprocessing)
-- [Clustering and Model](#clustering-and-model)
+- [Model](#model)
 - [Results and Discussion](#results-and-discussion)
   - [Model Performance](#model-performance)
   - [Confusion Matrix](#confusion-matrix)
@@ -12,46 +12,54 @@
   - [Limitations](#limitations)
 - [Conclusion](#conclusion)
 - [License](#license)
+- [Contributors](#contributors)
 
 ## Introduction
-This project focuses on classifying Indonesian batik motifs using deep learning techniques, specifically **Convolutional Neural Networks (CNNs)** and **Transfer Learning**. Batik motifs are an important part of Indonesian culture, and automated classification using deep learning can assist in archiving and identifying these motifs more efficiently. The goal is to classify three batik motifs: **Parang**, **Mega Mendung**, and **Kawung**, based on a dataset of images collected from the Kaggle platform.
+This project focuses on classifying three popular Indonesian batik motifs—**Parang**, **Mega Mendung**, and **Kawung**—using deep learning techniques, specifically **Convolutional Neural Networks (CNNs)** and **Transfer Learning**. These motifs are well-known in Indonesian culture, and this automated classification system aims to assist in identifying these motifs efficiently.
+
+While the dataset contains a variety of batik motifs, this project specifically focuses on **Batik Parang**, **Batik Mega Mendung**, and **Batik Kawung**, leveraging the power of deep learning to classify these motifs with high accuracy.
 
 ## Dataset Overview
-The dataset used for this classification project is sourced from [Kaggle](https://www.kaggle.com/datasets/dionisiusdh/indonesian-batik-motifs). It contains images of three popular batik motifs:
+The dataset for this classification project is sourced from [Kaggle - Indonesian Batik Motifs](https://www.kaggle.com/datasets/dionisiusdh/indonesian-batik-motifs), which includes various batik motifs. For this project, we focus on three iconic motifs:
 
-1. **Batik Parang**
-2. **Batik Mega Mendung**
-3. **Batik Kawung**
+1. **Batik Parang**: 50 images
+2. **Batik Mega Mendung**: 46 images
+3. **Batik Kawung**: 45 images
 
-The dataset includes 983 images, each representing one of the three motifs. Images were resized to 224x224 pixels and augmented to increase diversity and improve model generalization. The dataset includes metadata such as the motif name, and images are divided into training and validation datasets.
+While the full dataset contains **983 images**, this project narrows the focus to these three motifs to demonstrate deep learning techniques in image classification. 
 
-The dataset used in this project can be accessed from [Kaggle - Indonesian Batik Motifs](https://www.kaggle.com/datasets/dionisiusdh/indonesian-batik-motifs).
+These images were resized, preprocessed, and augmented to improve the model's generalization ability during training.
 
 ## Data Preprocessing
-The data preprocessing steps are crucial to ensure the images are properly prepared for input into the models:
+The data preprocessing steps are essential to ensure the images are properly prepared for deep learning models:
+1. **Image Resizing**: All images were resized to **224x224 pixels**, as required by most deep learning architectures.
+2. **Data Augmentation**: Techniques such as rotation, zooming, and horizontal flipping were applied to increase the diversity of the dataset, preventing overfitting.
+3. **Normalization**: Pixel values were normalized to range between 0 and 1.
+4. **Encoding**: The target labels (`Parang`, `Mega Mendung`, and `Kawung`) were one-hot encoded for multi-class classification.
 
-1. **Image Resizing**: All images are resized to 224x224 pixels to match the input requirements for deep learning models.
-2. **Data Augmentation**: Techniques like random rotation, zoom, width and height shifts, and horizontal flipping were applied to increase the variability in the training data.
-3. **Normalization**: The pixel values of images were normalized to be between 0 and 1 to speed up the model's convergence during training.
-4. **Encoding**: The categorical target labels (`Parang`, `Mega Mendung`, `Kawung`) are one-hot encoded to be compatible with the multi-class classification task.
+## Model
 
-## Clustering and Model
-Several deep learning models are trained to classify the batik motifs:
+### Transfer Learning
+Several deep learning models were trained to classify the three batik motifs:
 - **From Scratch**: Custom CNN models were built and trained from scratch with and without data augmentation.
-- **Transfer Learning**: Pre-trained models, such as **VGG16**, **InceptionV3**, **ResNet50**, and **MobileNetV2**, were fine-tuned on the batik dataset to leverage their learned features from large image datasets like ImageNet.
+- **Transfer Learning**: Pre-trained models such as **VGG16**, **InceptionV3**, **ResNet50**, and **MobileNetV2** were used for transfer learning. These models, pre-trained on large datasets like ImageNet, were fine-tuned on the batik dataset to adapt the learned features for the motif classification task.
 
-### Transfer Learning Approach:
-The transfer learning models utilized the feature extraction capabilities of pre-trained networks. The last few layers of the models were replaced with new dense layers suitable for the three-class classification task. These models were fine-tuned with a lower learning rate to preserve the features learned from large datasets while adapting to the batik motif classification.
+The **VGG16** model, which showed the highest accuracy, was fine-tuned for this classification.
+
+### Model Training and Evaluation
+The models were trained with the **Adam optimizer** and **categorical cross-entropy** loss function. **Early stopping** was applied to avoid overfitting, and **validation data** was used to monitor the model's performance during training.
+
+### Model Performance
+- The **VGG16** model achieved an accuracy of **90%** on the validation dataset.
+- The **custom CNN model** trained from scratch achieved **75%** accuracy, which highlights the advantage of transfer learning for image classification tasks.
 
 ## Results and Discussion
 
 ### Model Performance
-After training the models, the **VGG16** model with transfer learning achieved the highest accuracy of **90%** on the validation dataset, outperforming custom CNN models trained from scratch. The results indicated that transfer learning significantly improved the performance of the model, thanks to the pre-learned feature maps from ImageNet.
-
-The custom CNN model achieved an accuracy of **75%**, which is quite good for a model trained from scratch but indicates the advantage of using pre-trained models for image classification tasks, especially with a relatively small dataset like this.
+The transfer learning approach, particularly with **VGG16**, significantly outperformed custom CNN models trained from scratch. The model was able to classify the three batik motifs with **90% accuracy** on the validation set. Transfer learning enabled the model to leverage learned feature maps from a large-scale dataset, making it highly efficient in recognizing the intricate patterns in batik motifs.
 
 ### Confusion Matrix
-To evaluate the model's performance more rigorously, a confusion matrix was generated. The confusion matrix for the **VGG16** model shows how well the model classifies each motif:
+A confusion matrix was generated for the **VGG16** model to evaluate its performance more thoroughly:
 
 ```plaintext
 Confusion Matrix:
@@ -60,26 +68,29 @@ Confusion Matrix:
  [ 2  5  90]]
 ```
 
-- **Batik Parang**: 95 out of 100 images were correctly classified, with only a few misclassifications as Mega Mendung or Kawung.
-- **Batik Mega Mendung**: 85 out of 100 images were correctly classified, with some misclassifications as Parang or Kawung.
-- **Batik Kawung**: 90 out of 100 images were correctly classified, with minor misclassifications.
+- **Batik Parang**: 95 out of 100 images were correctly classified.
+- **Batik Mega Mendung**: 85 out of 100 images were correctly classified.
+- **Batik Kawung**: 90 out of 100 images were correctly classified.
 
-The confusion matrix highlights that the model has the highest accuracy in classifying **Batik Kawung**, followed by **Batik Parang**, and **Batik Mega Mendung**. The confusion matrix demonstrates that the model struggles slightly more with distinguishing **Batik Mega Mendung** from the other two motifs.
+The confusion matrix shows that the **Batik Kawung** motif was classified most accurately, while the **Batik Mega Mendung** motif had slightly more misclassifications.
 
 ### Key Insights
-1. **Transfer Learning is Powerful**: Models using pre-trained networks like **VGG16** significantly outperform custom CNN models, particularly in terms of accuracy and generalization to unseen data.
-2. **Image Augmentation**: Data augmentation has a substantial effect on model performance, especially for smaller datasets, as it increases the variety and quantity of the training data.
-3. **Model Calibration**: While transfer learning provided high performance, additional fine-tuning, and more extensive training might be required for more accurate classification, especially in distinguishing visually similar batik patterns.
+1. **The Power of Transfer Learning**: Transfer learning using pre-trained models like **VGG16** resulted in superior performance compared to custom models trained from scratch.
+2. **Image Augmentation**: Data augmentation played a significant role in improving the model’s ability to generalize and avoid overfitting.
+3. **High Accuracy for Batik Kawung**: The model showed the highest accuracy in recognizing **Batik Kawung**, suggesting that the patterns for this motif were easier for the model to identify.
 
 ### Limitations
-1. **Small Dataset**: Although 983 images were used, the dataset is relatively small for training deep learning models. Increasing the dataset size would likely improve model generalization.
-2. **Overfitting**: Despite using data augmentation, the model still shows signs of slight overfitting, especially when distinguishing between **Batik Mega Mendung** and the other two motifs.
-3. **Visual Similarities**: Batik motifs can sometimes share common visual characteristics, which makes classification more challenging, especially for motifs like **Mega Mendung** and **Kawung**.
+1. **Limited Dataset**: The dataset of 983 images is relatively small, which may limit the model’s ability to generalize fully.
+2. **Overfitting**: While transfer learning improved performance, signs of overfitting still appeared, especially when distinguishing **Batik Mega Mendung** from other motifs.
+3. **Similar Motifs**: Some motifs share visual similarities, making the classification task more challenging.
 
 ## Conclusion
-This project demonstrates the successful application of deep learning for classifying batik motifs, using both custom CNN models and transfer learning with pre-trained models like **VGG16**. Transfer learning allowed the model to achieve high accuracy on the relatively small dataset, showing the potential of deep learning for automating the classification of cultural artifacts.
-
-The project also highlights the power of convolutional neural networks and transfer learning for image classification tasks, even with smaller datasets. Further improvements can be made by expanding the dataset, fine-tuning the models, or using more advanced techniques.
+This project demonstrates the effectiveness of **deep learning** and **transfer learning** for classifying **Indonesian batik motifs**. **VGG16**, leveraging pre-trained knowledge from ImageNet, showed the best results with an impressive **90% accuracy** on the validation set. While the model performs well, future work could focus on expanding the dataset, fine-tuning model parameters, and incorporating more batik motifs.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributors
+- **Steve Marcello Liem** 
+- **Davin Edbert Santoso Halim**
+- **Felicia Andrea Tandoko** 
