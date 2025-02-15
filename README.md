@@ -38,8 +38,6 @@ The data preprocessing steps are essential to ensure the images are properly pre
 3. **Normalization**: Pixel values were normalized to range between 0 and 1.
 4. **Encoding**: The target labels (`Parang`, `Mega Mendung`, and `Kawung`) were one-hot encoded for multi-class classification.
 
-Thank you for the clarification. Based on your request, here's the corrected section:
-
 ---
 
 ### **Model**
