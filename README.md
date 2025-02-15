@@ -3,6 +3,7 @@
 ## Table of Contents
 - [Introduction](#introduction)
 - [Dataset Overview](#dataset-overview)
+- [Methodology](#methodology)
 - [Data Preprocessing](#data-preprocessing)
 - [Model](#model)
 - [Results and Discussion](#results-and-discussion)
@@ -28,7 +29,8 @@ The dataset for this classification project is sourced from [Kaggle - Indonesian
 
 While the full dataset contains **983 images**, this project narrows the focus to these three motifs to demonstrate deep learning techniques in image classification. 
 
-These images were resized, preprocessed, and augmented to improve the model's generalization ability during training.
+## Methodology
+![image](https://github.com/user-attachments/assets/1f113663-9c44-406d-83ef-ce0143f3373b)
 
 ## Data Preprocessing
 The data preprocessing steps are essential to ensure the images are properly prepared for deep learning models:
